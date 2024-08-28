@@ -1,0 +1,1504 @@
+import pygame
+from pygame import *
+
+pygame.init() #initialising pygame
+
+screen_width = 600 #dimensions
+screen_height = 700
+
+player = 'x'
+play = True
+
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("noughts & crosses") #game name
+clock = pygame.time.Clock()
+
+board_colour = (255, 246, 178)
+board_colour2 = (212, 206, 150)
+board_edge_colour = (134, 104, 4)
+
+board = [[None, None, None],
+         [None, None, None],
+         [None, None, None],
+        ]
+
+board2 = [[None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None]]
+
+class Button: #creates button class
+    def __init__(self, x_pos, y_pos, width, height, base_colour, hover_colour, enabled):
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.width = width
+        self.height = height
+        self.base_colour = base_colour
+        self.hover_colour = hover_colour
+        self.enabled = enabled
+        self.draw() #draws button to screen automatically
+
+    def draw(self): #draws button to screen
+        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height)) #creates rectangle that is the button
+
+        if self.enabled: #if enabled = True
+            if self.hover():   
+                pygame.draw.rect(screen, self.hover_colour, button_rect, 0, 3) #changes colour when clicked
+            else:
+                pygame.draw.rect(screen, self.base_colour, button_rect, 0, 3)
+        else:
+            pygame.draw.rect(screen, self.base_colour, button_rect, 0, 3) #if enabled is false, will not change colour when clicked
+
+    def hover(self):
+        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        mouse_pos = pygame.mouse.get_pos()
+        if button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
+
+    def clicked(self): #checks if button gets clicked
+        mouse_pos = pygame.mouse.get_pos()
+        left_click = pygame.mouse.get_pressed()[0]
+        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+
+        if left_click and button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
+
+def write(message, size, colour, x_pos, y_pos): #creates function for writing text to screen
+    font = pygame.font.SysFont('Arial', size)
+    text = font.render(message, True, colour)
+    screen.blit(text, (x_pos, y_pos))
+
+def switch():
+    global player
+    if player == 'x':
+        player = 'o' 
+    elif player == 'o':
+        player = 'x'
+
+def deactivate_normal_buttons():
+    global board_pos1
+    global board_pos2
+    global board_pos3
+    global board_pos4
+    global board_pos5
+    global board_pos6
+    global board_pos7
+    global board_pos8
+    global board_pos9
+
+    board_pos1 = Button(5, 105, 195, 195, board_colour, board_colour2, False) #makes all buttons inactive
+    board_pos2 = Button(205, 105, 195, 195, board_colour, board_colour2, False)
+    board_pos3 = Button(405, 105, 190, 195, board_colour, board_colour2, False)
+    board_pos4 = Button(5, 305, 195, 195, board_colour, board_colour2, False)
+    board_pos5 = Button(205, 305, 195, 195, board_colour, board_colour2, False)
+    board_pos6 = Button(405, 305, 190, 195, board_colour, board_colour2, False)
+    board_pos7 = Button(5, 505, 195, 190, board_colour, board_colour2, False)
+    board_pos8 = Button(205, 505, 195, 190, board_colour, board_colour2, False)
+    board_pos9 = Button(405, 505, 190, 190, board_colour, board_colour2, False)
+
+def deactivate_extra_buttons():
+    global board2_pos1 
+    global board2_pos2
+    global board2_pos3 
+    global board2_pos4 
+    global board2_pos5 
+    global board2_pos6 
+    global board2_pos7 
+    global board2_pos8 
+    global board2_pos9
+    global board2_pos10
+    global board2_pos11
+    global board2_pos12
+    global board2_pos13
+    global board2_pos14
+    global board2_pos15
+    global board2_pos16 
+    global board2_pos17 
+    global board2_pos18 
+    global board2_pos19
+    global board2_pos20 
+    global board2_pos21 
+    global board2_pos22 
+    global board2_pos23 
+    global board2_pos24 
+    global board2_pos25 
+    global board2_pos26
+    global board2_pos27 
+    global board2_pos28 
+    global board2_pos29 
+    global board2_pos30
+    global board2_pos31 
+    global board2_pos32 
+    global board2_pos33 
+    global board2_pos34 
+    global board2_pos35 
+    global board2_pos36 
+    global board2_pos37 
+    global board2_pos38 
+    global board2_pos39 
+    global board2_pos40 
+    global board2_pos41 
+    global board2_pos42 
+    global board2_pos43
+    global board2_pos45
+    global board2_pos46
+    global board2_pos47
+    global board2_pos48
+    global board2_pos49
+    global board2_pos50
+    global board2_pos51
+    global board2_pos52
+    global board2_pos53
+    global board2_pos54
+    global board2_pos55
+    global board2_pos56
+    global board2_pos57
+    global board2_pos58
+    global board2_pos59
+    global board2_pos60
+    global board2_pos61
+    global board2_pos62
+    global board2_pos63
+    global board2_pos64
+    global board2_pos65
+    global board2_pos66
+    global board2_pos67
+    global board2_pos68
+    global board2_pos69
+    global board2_pos70
+    global board2_pos71
+    global board2_pos72
+    global board2_pos73
+    global board2_pos74
+    global board2_pos75
+    global board2_pos76
+    global board2_pos77
+    global board2_pos78
+    global board2_pos79
+    global board2_pos80
+    global board2_pos81
+
+    board2_pos1 = Button(3, 100, 66, 66, board_colour, board_colour2, False) 
+    board2_pos2 = Button(69, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos3 = Button(134, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos4 = Button(201, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos5 = Button(267, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos6 = Button(333, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos7 = Button(399, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos8 = Button(464, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos9 = Button(531, 100, 66, 66, board_colour, board_colour2, False)
+    board2_pos10 = Button(3, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos11 = Button(69, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos12 = Button(134, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos13 = Button(201, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos14 = Button(267, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos15 = Button(333, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos16 = Button(399, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos17 = Button(464, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos18 = Button(531, 166, 66, 66, board_colour, board_colour2, False)
+    board2_pos19 = Button(3, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos20 = Button(69, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos21 = Button(134, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos22 = Button(201, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos23 = Button(267, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos24 = Button(333, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos25 = Button(399, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos26 = Button(464, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos27 = Button(531, 232, 66, 66, board_colour, board_colour2, False)
+    board2_pos28 = Button(3, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos29 = Button(69, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos30 = Button(134, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos31 = Button(201, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos32 = Button(267, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos33 = Button(333, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos34 = Button(399, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos35 = Button(464, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos36 = Button(531, 298, 66, 66, board_colour, board_colour2, False)
+    board2_pos37 = Button(3, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos38 = Button(69, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos39 = Button(134, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos40 = Button(201, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos41 = Button(267, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos42 = Button(333, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos43 = Button(399, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos44 = Button(464, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos45 = Button(531, 364, 66, 66, board_colour, board_colour2, False)
+    board2_pos46 = Button(3, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos47 = Button(69, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos48 = Button(134, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos49 = Button(201, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos50 = Button(267, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos51 = Button(333, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos52 = Button(399, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos53 = Button(464, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos54 = Button(531, 430, 66, 66, board_colour, board_colour2, False)
+    board2_pos55 = Button(3, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos56 = Button(69, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos57 = Button(134, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos58 = Button(201, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos59 = Button(267, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos60 = Button(333, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos61 = Button(399, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos62 = Button(464, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos63 = Button(531, 496, 66, 66, board_colour, board_colour2, False)
+    board2_pos64 = Button(3, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos65 = Button(69, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos66 = Button(134, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos67 = Button(201, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos68 = Button(267, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos69 = Button(333, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos70 = Button(399, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos71 = Button(464, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos72 = Button(531, 562, 66, 66, board_colour, board_colour2, False)
+    board2_pos73 = Button(3, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos74 = Button(69, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos75 = Button(134, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos76 = Button(201, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos77 = Button(267, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos78 = Button(333, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos79 = Button(399, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos80 = Button(464, 628, 66, 66, board_colour, board_colour2, False)
+    board2_pos81 = Button(531, 628, 66, 66, board_colour, board_colour2, False)
+
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 166, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 232, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 298, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 364, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 430, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 496, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 562, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 628, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 695, 600, 5))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(66, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(132, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(198, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(264, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(330, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(396, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(462, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(528, 100, 5, 600))
+    pygame.draw.rect(screen, board_edge_colour, pygame.Rect(595, 100, 5, 600))
+
+def reset_normal():
+    global board
+
+    board = [[None, None, None],
+         [None, None, None],
+         [None, None, None],
+        ]
+
+    global player
+    player = 'x'
+
+    global play
+    play = True
+
+    normal()
+
+def reset_extra():
+    global board2
+    
+    board2 = [[None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None],
+          [None, None, None, None, None, None, None, None, None]]
+
+    global player
+    player = 'x'
+
+    global play
+    play = True
+
+def check_normal_reset():
+    if restart.clicked():
+        reset_normal()
+
+def check_extra_reset():
+    if restart.clicked():
+        reset_extra()
+
+def check():
+    global play
+    global restart
+    empty = 0
+    for row in board:
+        for column in row:
+            if column == None:
+                empty += 1 #increments empty for every empty space
+
+    if empty == 0:
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100)) #game over if no empty spaces left
+            write('GAME OVER', 50, 'red', 190, 25)
+            deactivate_normal_buttons()
+            display()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+
+def display_normal():
+    if board[0][0] != None: #displaying player symbol on board
+        write(board[0][0], 200, 'black', 60, 65)
+    if board[0][1] != None:
+        write(board[0][1], 200, 'black', 260, 65)
+    if board[0][2] != None:
+        write(board[0][2], 200, 'black', 460, 65)
+    if board[1][0] != None:
+        write(board[1][0], 200, 'black', 60, 260)
+    if board[1][1] != None:
+        write(board[1][1], 200, 'black', 260, 260)
+    if board[1][2] != None:
+        write(board[1][2], 200, 'black', 460, 260)
+    if board[2][0] != None:
+        write(board[2][0], 200, 'black', 60, 460)
+    if board[2][1] != None:
+        write(board[2][1], 200, 'black', 260, 460)
+    if board[2][2] != None:
+        write(board[2][2], 200, 'black', 460, 460)
+
+def display_extra():
+    if board2[0][0] != None:
+        write(board2[0][0], 70, 'black', 20, 90)
+    if board2[0][1] != None:
+        write(board2[0][1], 70, 'black', 85, 90)
+    if board2[0][2] != None:
+        write(board2[0][2], 70, 'black', 150, 90)
+    if board2[0][3] != None:
+        write(board2[0][3], 70, 'black', 220, 90)
+    if board2[0][4] != None:
+        write(board2[0][4], 70, 'black', 285, 90)
+    if board2[0][5] != None:
+        write(board2[0][5], 70, 'black', 350, 90)
+    if board2[0][6] != None:
+        write(board2[0][6], 70, 'black', 415, 90)
+    if board2[0][7] != None:
+        write(board2[0][7], 70, 'black', 485, 90)
+    if board2[0][8] != None:
+        write(board2[0][8], 70, 'black', 550, 90)
+    if board2[1][0] != None:
+        write(board2[1][0], 70, 'black', 20, 155)
+    if board2[1][1] != None:
+        write(board2[1][1], 70, 'black', 85, 155)
+    if board2[1][2] != None:
+        write(board2[1][2], 70, 'black', 150, 155)
+    if board2[1][3] != None:
+        write(board2[1][3], 70, 'black', 220, 155)
+    if board2[1][4] != None:
+        write(board2[1][4], 70, 'black', 285, 155)
+    if board2[1][5] != None:
+        write(board2[1][5], 70, 'black', 350, 155)
+    if board2[1][6] != None:
+        write(board2[1][6], 70, 'black', 415, 155)
+    if board2[1][7] != None:
+        write(board2[1][7], 70, 'black', 485, 155)
+    if board2[1][8] != None:
+        write(board2[1][8], 70, 'black', 550, 155)
+    if board2[2][0] != None:
+        write(board2[2][0], 70, 'black', 20, 220)
+    if board2[2][1] != None:
+        write(board2[2][1], 70, 'black', 85, 220)
+    if board2[2][2] != None:
+        write(board2[2][2], 70, 'black', 150, 220)
+    if board2[2][3] != None:
+        write(board2[2][3], 70, 'black', 220, 220)
+    if board2[2][4] != None:
+        write(board2[2][4], 70, 'black', 285, 220)
+    if board2[2][5] != None:
+        write(board2[2][5], 70, 'black', 350, 220)
+    if board2[2][6] != None:
+        write(board2[2][6], 70, 'black', 415, 220)
+    if board2[2][7] != None:
+        write(board2[2][7], 70, 'black', 485, 220)
+    if board2[2][8] != None:
+        write(board2[2][8], 70, 'black', 550, 220)
+    if board2[3][0] != None:
+        write(board2[3][0], 70, 'black', 20, 285)
+    if board2[3][1] != None:
+        write(board2[3][1], 70, 'black', 85, 285)
+    if board2[3][2] != None:
+        write(board2[3][2], 70, 'black', 150, 285)
+    if board2[3][3] != None:
+        write(board2[3][3], 70, 'black', 220, 285)
+    if board2[3][4] != None:
+        write(board2[3][4], 70, 'black', 285, 285)
+    if board2[3][5] != None:
+        write(board2[3][5], 70, 'black', 350, 285)
+    if board2[3][6] != None:
+        write(board2[3][6], 70, 'black', 415, 285)
+    if board2[3][7] != None:
+        write(board2[3][7], 70, 'black', 485, 285)
+    if board2[3][8] != None:
+        write(board2[3][8], 70, 'black', 550, 285)
+    if board2[4][0] != None:
+        write(board2[4][0], 70, 'black', 20, 350)
+    if board2[4][1] != None:
+        write(board2[4][1], 70, 'black', 85, 350)
+    if board2[4][2] != None:
+        write(board2[4][2], 70, 'black', 150, 350)
+    if board2[4][3] != None:
+        write(board2[4][3], 70, 'black', 220, 350)
+    if board2[4][4] != None:
+        write(board2[4][4], 70, 'black', 285, 350)
+    if board2[4][5] != None:
+        write(board2[4][4], 70, 'black', 350, 350)
+    if board2[4][6] != None:
+        write(board2[4][6], 70, 'black', 415, 350)
+    if board2[4][7] != None:
+        write(board2[4][7], 70, 'black', 485, 350)
+    if board2[4][8] != None:
+        write(board2[4][8], 70, 'black', 550, 350)
+    if board2[5][0] != None:
+        write(board2[5][0], 70, 'black', 20, 415)
+    if board2[5][1] != None:
+        write(board2[5][1], 70, 'black', 85, 415)
+    if board2[5][2] != None:
+        write(board2[5][2], 70, 'black', 150, 415)
+    if board2[5][3] != None:
+        write(board2[5][3], 70, 'black', 220, 415)
+    if board2[5][4] != None:
+        write(board2[5][4], 70, 'black', 285, 415)
+    if board2[5][5] != None:
+        write(board2[5][5], 70, 'black', 350, 415)
+    if board2[5][6] != None:
+        write(board2[5][6], 70, 'black', 415, 415)
+    if board2[5][7] != None:
+        write(board2[5][7], 70, 'black', 485, 415)
+    if board2[5][8] != None:
+        write(board2[5][8], 70, 'black', 550, 415)
+    if board2[6][0] != None:
+        write(board2[6][0], 70, 'black', 20, 480)
+    if board2[6][1] != None:
+        write(board2[6][1], 70, 'black', 85, 480)
+    if board2[6][2] != None:
+        write(board2[6][2], 70, 'black', 150, 480)
+    if board2[6][3] != None:
+        write(board2[6][3], 70, 'black', 220, 480)
+    if board2[6][4] != None:
+        write(board2[6][4], 70, 'black', 285, 480)
+    if board2[6][5] != None:
+        write(board2[6][5], 70, 'black', 350, 480)
+    if board2[6][6] != None:
+        write(board2[6][6], 70, 'black', 415, 480)
+    if board2[6][7] != None:
+        write(board2[6][7], 70, 'black', 485, 480)
+    if board2[6][8] != None:
+        write(board2[6][8], 70, 'black', 550, 480)
+    if board2[7][0] != None:
+        write(board2[7][0], 70, 'black', 20, 550)
+    if board2[7][1] != None:
+        write(board2[7][1], 70, 'black', 85, 550)
+    if board2[7][2] != None:
+        write(board2[7][2], 70, 'black', 150, 550)
+    if board2[7][3] != None:
+        write(board2[7][3], 70, 'black', 220, 550)
+    if board2[7][4] != None:
+        write(board2[7][4], 70, 'black', 285, 550)
+    if board2[7][5] != None:
+        write(board2[7][5], 70, 'black', 350, 550)
+    if board2[7][6] != None:
+        write(board2[7][6], 70, 'black', 415, 550)
+    if board2[7][7] != None:
+        write(board2[7][7], 70, 'black', 485, 550)
+    if board2[7][8] != None:
+        write(board2[7][8], 70, 'black', 550, 550)
+    if board2[8][0] != None:
+        write(board2[8][0], 70, 'black', 20, 615)
+    if board2[8][1] != None:
+        write(board2[8][1], 70, 'black', 85, 615)
+    if board2[8][2] != None:
+        write(board2[8][2], 70, 'black', 150, 615)
+    if board2[8][3] != None:
+        write(board2[8][3], 70, 'black', 220, 615)
+    if board2[8][4] != None:
+        write(board2[8][4], 70, 'black', 285, 615)
+    if board2[8][5] != None:
+        write(board2[8][5], 70, 'black', 350, 615)
+    if board2[8][6] != None:
+        write(board2[8][6], 70, 'black', 415, 615)
+    if board2[8][7] != None:
+        write(board2[8][7], 70, 'black', 485, 615)
+    if board2[8][8] != None:
+        write(board2[8][8], 70, 'black', 550, 615)
+
+def inform():
+    if player == 'x':
+            write('player 1 (x) turn', 50, 'black', 150, 20) #informing player of turns
+    if player == 'o':
+        write('player 2 (o) turn', 50, 'black', 150, 20)
+
+def normal(): #game loop
+    global play
+    global restart
+    while True:
+
+        #draw to screen
+        screen.fill(board_colour)
+        pygame.draw.rect(screen, 'pink', pygame.Rect(0, 0, 600, 100)) #creating grid    
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(200, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(400, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(595, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 300, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 500, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 695, 600, 5))
+
+        board_pos1 = Button(5, 105, 195, 195, board_colour, board_colour2, True) 
+        board_pos2 = Button(205, 105, 195, 195, board_colour, board_colour2, True)
+        board_pos3 = Button(405, 105, 190, 195, board_colour, board_colour2, True)
+        board_pos4 = Button(5, 305, 195, 195, board_colour, board_colour2, True)
+        board_pos5 = Button(205, 305, 195, 195, board_colour, board_colour2, True)
+        board_pos6 = Button(405, 305, 190, 195, board_colour, board_colour2, True)
+        board_pos7 = Button(5, 505, 195, 190, board_colour, board_colour2, True)
+        board_pos8 = Button(205, 505, 195, 190, board_colour, board_colour2, True)
+        board_pos9 = Button(405, 505, 190, 190, board_colour, board_colour2, True)
+
+        inform()
+        display_normal()
+
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if board_pos1.clicked() and board[0][0] == None and play: #checks if position is empty, if it is places player symbol
+                    board[0][0] = player
+                    switch()
+                if board_pos2.clicked() and board[0][1] == None and play:
+                    board[0][1] = player
+                    switch()
+                if board_pos3.clicked() and board[0][2] == None and play:
+                    board[0][2] = player
+                    switch()
+                if board_pos4.clicked() and board[1][0] == None and play:
+                    board[1][0] = player
+                    switch()
+                if board_pos5.clicked() and board[1][1] == None and play:
+                    board[1][1] = player
+                    switch()
+                if board_pos6.clicked() and board[1][2] == None and play:
+                    board[1][2] = player
+                    switch()
+                if board_pos7.clicked() and board[2][0] == None and play:
+                    board[2][0] = player
+                    switch()
+                if board_pos8.clicked() and board[2][1] == None and play:
+                    board[2][1] = player
+                    switch()
+                if board_pos9.clicked() and board[2][2] == None and play:
+                    board[2][2] = player
+                    switch()
+            if event.type == pygame.QUIT: #checks if the 'x' button is pressed
+                pygame.quit()
+
+        check()
+
+        if board[0][0] == 'x' and board[0][1] == 'x' and board[0][2] == 'x': #checks all winning combos
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False #ensures no more moves can be made
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][0] == 'o' and board[0][1] == 'o' and board[0][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[1][0] == 'x' and board[1][1] == 'x' and board[1][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[1][0] == 'o' and board[1][1] == 'o' and board[1][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[2][0] == 'x' and board[2][1] == 'x' and board[2][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[2][0] == 'o' and board[2][1] == 'o' and board[2][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][0] == 'x' and board[1][0] == 'x' and board[2][0] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][0] == '0' and board[1][0] == 'o' and board[2][0] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][1] == 'x' and board[1][1] == 'x' and board[2][1] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][1] == 'o' and board[1][1] == 'o' and board[2][1] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][2] == 'x' and board[1][2] == 'x' and board[2][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][2] == 'o' and board[1][2] == 'o' and board[2][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][0] == 'x' and board[1][1] == 'x' and board[2][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[0][0] == 'o' and board[1][1] == 'o' and board[2][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[2][0] == 'x' and board[1][1] == 'x' and board[0][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+        elif board[2][0] == 'o' and board[1][1] == 'o' and board[0][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_normal_buttons()
+            play = False
+            display_normal()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_normal_reset()
+
+        pygame.display.update()
+
+def extra():
+    global play
+    global restart
+    while True:
+        #draw to screen
+        screen.fill('pink')
+
+        board2_pos1 = Button(3, 100, 66, 66, board_colour, board_colour2, True) 
+        board2_pos2 = Button(69, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos3 = Button(134, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos4 = Button(201, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos5 = Button(267, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos6 = Button(333, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos7 = Button(399, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos8 = Button(464, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos9 = Button(531, 100, 66, 66, board_colour, board_colour2, True)
+        board2_pos10 = Button(3, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos11 = Button(69, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos12 = Button(134, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos13 = Button(201, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos14 = Button(267, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos15 = Button(333, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos16 = Button(399, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos17 = Button(464, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos18 = Button(531, 166, 66, 66, board_colour, board_colour2, True)
+        board2_pos19 = Button(3, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos20 = Button(69, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos21 = Button(134, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos22 = Button(201, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos23 = Button(267, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos24 = Button(333, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos25 = Button(399, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos26 = Button(464, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos27 = Button(531, 232, 66, 66, board_colour, board_colour2, True)
+        board2_pos28 = Button(3, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos29 = Button(69, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos30 = Button(134, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos31 = Button(201, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos32 = Button(267, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos33 = Button(333, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos34 = Button(399, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos35 = Button(464, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos36 = Button(531, 298, 66, 66, board_colour, board_colour2, True)
+        board2_pos37 = Button(3, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos38 = Button(69, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos39 = Button(134, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos40 = Button(201, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos41 = Button(267, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos42 = Button(333, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos43 = Button(399, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos44 = Button(464, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos45 = Button(531, 364, 66, 66, board_colour, board_colour2, True)
+        board2_pos46 = Button(3, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos47 = Button(69, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos48 = Button(134, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos49 = Button(201, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos50 = Button(267, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos51 = Button(333, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos52 = Button(399, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos53 = Button(464, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos54 = Button(531, 430, 66, 66, board_colour, board_colour2, True)
+        board2_pos55 = Button(3, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos56 = Button(69, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos57 = Button(134, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos58 = Button(201, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos59 = Button(267, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos60 = Button(333, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos61 = Button(399, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos62 = Button(464, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos63 = Button(531, 496, 66, 66, board_colour, board_colour2, True)
+        board2_pos64 = Button(3, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos65 = Button(69, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos66 = Button(134, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos67 = Button(201, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos68 = Button(267, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos69 = Button(333, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos70 = Button(399, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos71 = Button(464, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos72 = Button(531, 562, 66, 66, board_colour, board_colour2, True)
+        board2_pos73 = Button(3, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos74 = Button(69, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos75 = Button(134, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos76 = Button(201, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos77 = Button(267, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos78 = Button(333, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos79 = Button(399, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos80 = Button(464, 628, 66, 66, board_colour, board_colour2, True)
+        board2_pos81 = Button(531, 628, 66, 66, board_colour, board_colour2, True)
+
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 166, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 232, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 298, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 364, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 430, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 496, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 562, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 628, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 695, 600, 5))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(0, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(66, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(132, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(198, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(264, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(330, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(396, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(462, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(528, 100, 5, 600))
+        pygame.draw.rect(screen, board_edge_colour, pygame.Rect(595, 100, 5, 600))
+
+        inform()
+        display_extra()
+
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if board2_pos1.clicked() and board2[0][0] == None and play:
+                    board2[0][0] = player
+                    switch()
+                if board2_pos2.clicked() and board2[0][1] == None and play:
+                    board2[0][1] = player
+                    switch()
+                if board2_pos3.clicked() and board2[0][2] == None and play:
+                    board2[0][2] = player
+                    switch()
+                if board2_pos4.clicked() and board2[0][3] == None and play:
+                    board2[0][3] = player
+                    switch()
+                if board2_pos5.clicked() and board2[0][4] == None and play:
+                    board2[0][4] = player
+                    switch()
+                if board2_pos6.clicked() and board2[0][5] == None and play:
+                    board2[0][5] = player
+                    switch()
+                if board2_pos7.clicked() and board2[0][6] == None and play:
+                    board2[0][6] = player
+                    switch()
+                if board2_pos8.clicked() and board2[0][7] == None and play:
+                    board2[0][7] = player
+                    switch()
+                if board2_pos9.clicked() and board2[0][8] == None and play:
+                    board2[0][8] = player
+                    switch()
+                if board2_pos10.clicked() and board2[1][0] == None and play:
+                    board2[1][0] = player
+                    switch()
+                if board2_pos11.clicked() and board2[1][1] == None and play:
+                    board2[1][1] = player
+                    switch()
+                if board2_pos12.clicked() and board2[1][2] == None and play:
+                    board2[1][2] = player
+                    switch()
+                if board2_pos13.clicked() and board2[1][3] == None and play:
+                    board2[1][3] = player
+                    switch()
+                if board2_pos14.clicked() and board2[1][4] == None and play:
+                    board2[1][4] = player
+                    switch()
+                if board2_pos15.clicked() and board2[1][5] == None and play:
+                    board2[1][5] = player
+                    switch()
+                if board2_pos16.clicked() and board2[1][6] == None and play:
+                    board2[1][6] = player
+                    switch()
+                if board2_pos17.clicked() and board2[1][7] == None and play:
+                    board2[1][7] = player
+                    switch()
+                if board2_pos18.clicked() and board2[1][8] == None and play:
+                    board2[1][8] = player
+                    switch()
+                if board2_pos19.clicked() and board2[2][0] == None and play:
+                    board2[2][0] = player
+                    switch()
+                if board2_pos20.clicked() and board2[2][1] == None and play:
+                    board2[2][1] = player
+                    switch()
+                if board2_pos21.clicked() and board2[2][2] == None and play:
+                    board2[2][2] = player
+                    switch()
+                if board2_pos22.clicked() and board2[2][3] == None and play:
+                    board2[2][3] = player
+                    switch()
+                if board2_pos23.clicked() and board2[2][4] == None and play:
+                    board2[2][4] = player
+                    switch()
+                if board2_pos24.clicked() and board2[2][5] == None and play:
+                    board2[2][5] = player
+                    switch()
+                if board2_pos25.clicked() and board2[2][6] == None and play:
+                    board2[2][6] = player
+                    switch()
+                if board2_pos26.clicked() and board2[2][7] == None and play:
+                    board2[2][7] = player
+                    switch()
+                if board2_pos27.clicked() and board2[2][8] == None and play:
+                    board2[2][8] = player
+                    switch()
+                if board2_pos28.clicked() and board2[3][0] == None and play:
+                    board2[3][0] = player
+                    switch()
+                if board2_pos29.clicked() and board2[3][1] == None and play:
+                    board2[3][1] = player
+                    switch()
+                if board2_pos30.clicked() and board2[3][2] == None and play:
+                    board2[3][2] = player
+                    switch()
+                if board2_pos31.clicked() and board2[3][3] == None and play:
+                    board2[3][3] = player
+                    switch()
+                if board2_pos32.clicked() and board2[3][4] == None and play:
+                    board2[3][4] = player
+                    switch()
+                if board2_pos33.clicked() and board2[3][5] == None and play:
+                    board2[3][5] = player
+                    switch()
+                if board2_pos34.clicked() and board2[3][6] == None and play:
+                    board2[3][6] = player
+                    switch()
+                if board2_pos35.clicked() and board2[3][7] == None and play:
+                    board2[3][7] = player
+                    switch()
+                if board2_pos36.clicked() and board2[3][8] == None and play:
+                    board2[3][8] = player
+                    switch()
+                if board2_pos37.clicked() and board2[4][0] == None and play:
+                    board2[4][0] = player
+                    switch()
+                if board2_pos38.clicked() and board2[4][1] == None and play:
+                    board2[4][1] = player
+                    switch()
+                if board2_pos39.clicked() and board2[4][2] == None and play:
+                    board2[4][2] = player
+                    switch()
+                if board2_pos40.clicked() and board2[4][3] == None and play:
+                    board2[4][3] = player
+                    switch()
+                if board2_pos41.clicked() and board2[4][4] == None and play:
+                    board2[4][4] = player
+                    switch()
+                if board2_pos42.clicked() and board2[4][5] == None and play:
+                    board2[4][5] = player
+                    switch()
+                if board2_pos43.clicked() and board2[4][6] == None and play:
+                    board2[4][6] = player
+                    switch()
+                if board2_pos44.clicked() and board2[4][7] == None and play:
+                    board2[4][7] = player
+                    switch()
+                if board2_pos45.clicked() and board2[4][8] == None and play:
+                    board2[4][8] = player
+                    switch()
+                if board2_pos46.clicked() and board2[5][0] == None and play:
+                    board2[5][0] = player
+                    switch()
+                if board2_pos47.clicked() and board2[5][1] == None and play:
+                    board2[5][1] = player
+                    switch()
+                if board2_pos48.clicked() and board2[5][2] == None and play:
+                    board2[5][2] = player
+                    switch()
+                if board2_pos49.clicked() and board2[5][3] == None and play:
+                    board2[5][3] = player
+                    switch()
+                if board2_pos50.clicked() and board2[5][4] == None and play:
+                    board2[5][4] = player
+                    switch()
+                if board2_pos51.clicked() and board2[5][5] == None and play:
+                    board2[5][5] = player
+                    switch()
+                if board2_pos52.clicked() and board2[5][6] == None and play:
+                    board2[5][6] = player
+                    switch()
+                if board2_pos53.clicked() and board2[5][7] == None and play:
+                    board2[5][7] = player
+                    switch()
+                if board2_pos54.clicked() and board2[5][8] == None and play:
+                    board2[5][8] = player
+                    switch()
+                if board2_pos55.clicked() and board2[6][0] == None and play:
+                    board2[6][0] = player
+                    switch()
+                if board2_pos56.clicked() and board2[6][1] == None and play:
+                    board2[6][1] = player
+                    switch()
+                if board2_pos57.clicked() and board2[6][2] == None and play:
+                    board2[6][2] = player
+                    switch()
+                if board2_pos58.clicked() and board2[6][3] == None and play:
+                    board2[6][3] = player
+                    switch()
+                if board2_pos59.clicked() and board2[6][4] == None and play:
+                    board2[6][4] = player
+                    switch()
+                if board2_pos60.clicked() and board2[6][5] == None and play:
+                    board2[6][5] = player
+                    switch()
+                if board2_pos61.clicked() and board2[6][6] == None and play:
+                    board2[6][6] = player
+                    switch()
+                if board2_pos62.clicked() and board2[6][7] == None and play:
+                    board2[6][7] = player
+                    switch()
+                if board2_pos63.clicked() and board2[6][8] == None and play:
+                    board2[6][8] = player
+                    switch()
+                if board2_pos64.clicked() and board2[7][0] == None and play:
+                    board2[7][0] = player
+                    switch()
+                if board2_pos65.clicked() and board2[7][1] == None and play:
+                    board2[7][1] = player
+                    switch()
+                if board2_pos66.clicked() and board2[7][2] == None and play:
+                    board2[7][2] = player
+                    switch()
+                if board2_pos67.clicked() and board2[7][3] == None and play:
+                    board2[7][3] = player
+                    switch()
+                if board2_pos68.clicked() and board2[7][4] == None and play:
+                    board2[7][4] = player
+                    switch()
+                if board2_pos69.clicked() and board2[7][5] == None and play:
+                    board2[7][5] = player
+                    switch()
+                if board2_pos70.clicked() and board2[7][6] == None and play:
+                    board2[7][6] = player
+                    switch()
+                if board2_pos71.clicked() and board2[7][7] == None and play:
+                    board2[7][7] = player
+                    switch()
+                if board2_pos72.clicked() and board2[7][8] == None and play:
+                    board2[7][8] = player
+                    switch()
+                if board2_pos73.clicked() and board2[8][0] == None and play:
+                    board2[8][0] = player
+                    switch()
+                if board2_pos74.clicked() and board2[8][1] == None and play:
+                    board2[8][1] = player
+                    switch()
+                if board2_pos75.clicked() and board2[8][2] == None and play:
+                    board2[8][2] = player
+                    switch()
+                if board2_pos76.clicked() and board2[8][3] == None and play:
+                    board2[8][3] = player
+                    switch()
+                if board2_pos77.clicked() and board2[8][4] == None and play:
+                    board2[8][4] = player
+                    switch()
+                if board2_pos78.clicked() and board2[8][5] == None and play:
+                    board2[8][5] = player
+                    switch()
+                if board2_pos79.clicked() and board2[8][6] == None and play:
+                    board2[8][6] = player
+                    switch()
+                if board2_pos80.clicked() and board2[8][7] == None and play:
+                    board2[8][7] = player
+                    switch()
+                if board2_pos81.clicked() and board2[8][8] == None and play:
+                    board2[8][8] = player
+                    switch()
+            if event.type == pygame.QUIT: #checks if the 'x' button is pressed
+                pygame.quit()
+
+        check()
+
+        if board2[0][0] == 'x' and board2[0][1] == 'x' and board2[0][2] == 'x' and board2[0][3] == 'x' and board2[0][4] == 'x' and board2[0][5] == 'x' and board2[0][6] == 'x' and board2[0][7] == 'x' and board2[0][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][0] == 'o' and board2[0][1] == 'o' and board2[0][2] == 'o' and board2[0][3] == 'o' and board2[0][4] == 'o' and board2[0][5] == 'o' and board2[0][6] == 'o' and board2[0][7] == 'o' and board2[0][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[1][0] == 'x' and board2[1][1] == 'x' and board2[1][2] == 'x' and board2[1][3] == 'x' and board2[1][4] == 'x' and board2[1][5] == 'x' and board2[1][6] == 'x' and board2[1][7] == 'x' and board2[1][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[1][0] == 'o' and board2[1][1] == 'o' and board2[1][2] == 'o' and board2[1][3] == 'o' and board2[1][4] == 'o' and board2[1][5] == 'o' and board2[1][6] == 'o' and board2[1][7] == 'o' and board2[1][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[2][0] == 'x' and board2[2][1] == 'x' and board2[2][2] == 'x' and board2[2][3] == 'x' and board2[2][4] == 'x' and board2[2][5] == 'x' and board2[2][6] == 'x' and board2[2][7] == 'x' and board2[2][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[2][0] == 'o' and board2[2][1] == 'o' and board2[2][2] == 'o' and board2[2][3] == 'o' and board2[2][4] == 'o' and board2[2][5] == 'o' and board2[2][6] == 'o' and board2[2][7] == 'o' and board2[2][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[3][0] == 'x' and board2[3][1] == 'x' and board2[3][2] == 'x' and board2[3][3] == 'x' and board2[3][4] == 'x' and board2[3][5] == 'x' and board2[3][6] == 'x' and board2[3][7] == 'x' and board2[3][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[3][0] == 'o' and board2[3][1] == 'o' and board2[3][2] == 'o' and board2[3][3] == 'o' and board2[3][4] == 'o' and board2[3][5] == 'o' and board2[3][6] == 'o' and board2[3][7] == 'o' and board2[3][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[4][0] == 'x' and board2[4][1] == 'x' and board2[4][2] == 'x' and board2[4][3] == 'x' and board2[4][4] == 'x' and board2[4][5] == 'x' and board2[4][6] == 'x' and board2[4][7] == 'x' and board2[4][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[4][0] == 'o' and board2[4][1] == 'o' and board2[4][2] == 'o' and board2[4][3] == 'o' and board2[4][4] == 'o' and board2[4][5] == 'o' and board2[4][6] == 'o' and board2[4][7] == 'o' and board2[4][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[5][0] == 'x' and board2[5][1] == 'x' and board2[5][2] == 'x' and board2[5][3] == 'x' and board2[5][4] == 'x' and board2[5][5] == 'x' and board2[5][6] == 'x' and board2[5][7] == 'x' and board2[5][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[5][0] == 'o' and board2[5][1] == 'o' and board2[5][2] == 'o' and board2[5][3] == 'o' and board2[5][4] == 'o' and board2[5][5] == 'o' and board2[5][6] == 'o' and board2[5][7] == 'o' and board2[5][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[6][0] == 'x' and board2[6][1] == 'x' and board2[6][2] == 'x' and board2[6][3] == 'x' and board2[6][4] == 'x' and board2[6][5] == 'x' and board2[6][6] == 'x' and board2[6][7] == 'x' and board2[6][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[6][0] == 'o' and board2[6][1] == 'o' and board2[6][2] == 'o' and board2[6][3] == 'o' and board2[6][4] == 'o' and board2[6][5] == 'o' and board2[6][6] == 'o' and board2[6][7] == 'o' and board2[6][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[7][0] == 'x' and board2[7][1] == 'x' and board2[7][2] == 'x' and board2[7][3] == 'x' and board2[7][4] == 'x' and board2[7][5] == 'x' and board2[7][6] == 'x' and board2[7][7] == 'x' and board2[7][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[7][0] == 'o' and board2[7][1] == 'o' and board2[7][2] == 'o' and board2[7][3] == 'o' and board2[7][4] == 'o' and board2[7][5] == 'o' and board2[7][6] == 'o' and board2[7][7] == 'o' and board2[7][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[8][0] == 'x' and board2[8][1] == 'x' and board2[8][2] == 'x' and board2[8][3] == 'x' and board2[8][4] == 'x' and board2[8][5] == 'x' and board2[8][6] == 'x' and board2[8][7] == 'x' and board2[8][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[8][0] == 'o' and board2[8][1] == 'o' and board2[8][2] == 'o' and board2[8][3] == 'o' and board2[8][4] == 'o' and board2[8][5] == 'o' and board2[8][6] == 'o' and board2[8][7] == 'o' and board2[8][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][0] == 'x' and board2[1][0] == 'x' and board2[2][0] == 'x' and board2[3][0] == 'x' and board2[4][0] == 'x' and board2[5][0] == 'x' and board2[6][0] == 'x' and board2[7][0] == 'x' and board2[8][0] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][0] == 'o' and board2[1][0] == 'o' and board2[2][0] == 'o' and board2[3][0] == 'o' and board2[4][0] == 'o' and board2[5][0] == 'o' and board2[6][0] == 'o' and board2[7][0] == 'o' and board2[8][0] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][1] == 'x' and board2[1][1] == 'x' and board2[2][1] == 'x' and board2[3][1] == 'x' and board2[4][1] == 'x' and board2[5][1] == 'x' and board2[6][1] == 'x' and board2[7][1] == 'x' and board2[8][1] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][1] == 'o' and board2[1][1] == 'o' and board2[2][1] == 'o' and board2[3][1] == 'o' and board2[4][1] == 'o' and board2[5][1] == 'o' and board2[6][1] == 'o' and board2[7][1] == 'o' and board2[8][1] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][2] == 'x' and board2[1][2] == 'x' and board2[2][2] == 'x' and board2[3][2] == 'x' and board2[4][2] == 'x' and board2[5][2] == 'x' and board2[6][2] == 'x' and board2[7][2] == 'x' and board2[8][2] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][2] == 'o' and board2[1][2] == 'o' and board2[2][2] == 'o' and board2[3][2] == 'o' and board2[4][2] == 'o' and board2[5][2] == 'o' and board2[6][2] == 'o' and board2[7][2] == 'o' and board2[8][2] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][3] == 'x' and board2[1][3] == 'x' and board2[2][3] == 'x' and board2[3][3] == 'x' and board2[4][3] == 'x' and board2[5][3] == 'x' and board2[6][3] == 'x' and board2[7][3] == 'x' and board2[8][3] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15) 
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][3] == 'o' and board2[1][3] == 'o' and board2[2][3] == 'o' and board2[3][3] == 'o' and board2[4][3] == 'o' and board2[5][3] == 'o' and board2[6][3] == 'o' and board2[7][3] == 'o' and board2[8][3] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][4] == 'x' and board2[1][4] == 'x' and board2[2][4] == 'x' and board2[3][4] == 'x' and board2[4][4] == 'x' and board2[5][4] == 'x' and board2[6][4] == 'x' and board2[7][4] == 'x' and board2[8][4] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)  
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][4] == 'o' and board2[1][4] == 'o' and board2[2][4] == 'o' and board2[3][4] == 'o' and board2[4][4] == 'o' and board2[5][4] == 'o' and board2[6][4] == 'o' and board2[7][4] == 'o' and board2[8][4] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][5] == 'x' and board2[1][5] == 'x' and board2[2][5] == 'x' and board2[3][5] == 'x' and board2[4][5] == 'x' and board2[5][5] == 'x' and board2[6][5] == 'x' and board2[7][5] == 'x' and board2[8][5] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][5] == 'o' and board2[1][5] == 'o' and board2[2][5] == 'o' and board2[3][5] == 'o' and board2[4][5] == 'o' and board2[5][5] == 'o' and board2[6][5] == 'o' and board2[7][5] == 'o' and board2[8][5] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][6] == 'x' and board2[1][6] == 'x' and board2[2][6] == 'x' and board2[3][6] == 'x' and board2[4][6] == 'x' and board2[5][6] == 'x' and board2[6][6] == 'x' and board2[7][6] == 'x' and board2[8][6] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][6] == 'o' and board2[1][6] == 'o' and board2[2][6] == 'o' and board2[3][6] == 'o' and board2[4][6] == 'o' and board2[5][6] == 'o' and board2[6][6] == 'o' and board2[7][6] == 'o' and board2[8][6] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][7] == 'x' and board2[1][7] == 'x' and board2[2][7] == 'x' and board2[3][7] == 'x' and board2[4][7] == 'x' and board2[5][7] == 'x' and board2[6][7] == 'x' and board2[7][7] == 'x' and board2[8][7] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15) 
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][7] == 'o' and board2[1][7] == 'o' and board2[2][7] == 'o' and board2[3][7] == 'o' and board2[4][7] == 'o' and board2[5][7] == 'o' and board2[6][7] == 'o' and board2[7][7] == 'o' and board2[8][7] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][8] == 'x' and board2[1][8] == 'x' and board2[2][8] == 'x' and board2[3][8] == 'x' and board2[4][8] == 'x' and board2[5][8] == 'x' and board2[6][8] == 'x' and board2[7][8] == 'x' and board2[8][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15) 
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][8] == 'o' and board2[1][8] == 'o' and board2[2][8] == 'o' and board2[3][8] == 'o' and board2[4][8] == 'o' and board2[5][8] == 'o' and board2[6][8] == 'o' and board2[7][8] == 'o' and board2[8][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][0] == 'x' and board2[1][1] == 'x' and board2[2][2] == 'x' and board2[3][3] == 'x' and board2[4][4] == 'x' and board2[5][5] == 'x' and board2[6][6] == 'x' and board2[7][7] == 'x' and board2[8][8] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons() 
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][0] == 'o' and board2[1][1] == 'o' and board2[2][2] == 'o' and board2[3][3] == 'o' and board2[4][4] == 'o' and board2[5][5] == 'o' and board2[6][6] == 'o' and board2[7][7] == 'o' and board2[8][8] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][8] == 'x' and board2[1][7] == 'x' and board2[2][6] == 'x' and board2[3][5] == 'x' and board2[4][4] == 'x' and board2[5][3] == 'x' and board2[6][2] == 'x' and board2[7][1] == 'x' and board2[8][0] == 'x':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 1 wins!', 60, 'red', 150, 15)
+            deactivate_extra_buttons()
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+        elif board2[0][8] == 'o' and board2[1][7] == 'o' and board2[2][6] == 'o' and board2[3][5] == 'o' and board2[4][4] == 'o' and board2[5][3] == 'o' and board2[6][2] == 'o' and board2[7][1] == 'o' and board2[8][0] == 'o':
+            pygame.draw.rect(screen, 'black', pygame.Rect(0, 0, 700, 100))
+            write('player 2 wins!', 60, 'red', 150, 15) 
+            deactivate_extra_buttons() 
+            play = False
+            display_extra()
+            restart = Button(225, 375, 150, 50, 'lightpink', 'pink', True)
+            write('restart?', 40, 'red', 245, 375)
+            check_extra_reset()
+
+        pygame.display.update()
+
+def home():
+    while True:
+        #draw to screen
+        screen.fill('pink')
+        write('now updated with noughts and crosses extra!', 35, 'black', 12, 10)
+
+        normal_mode = Button(225, 280, 150, 40, board_colour, board_colour2, True) #creating buttons
+        write('normal', 30, 'black', 260, 280)
+        extra_mode = Button(225, 350, 150, 40, board_colour, board_colour2, True)
+        write('extra', 30, 'black', 270, 350)
+
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if normal_mode.clicked():
+                    normal()
+                if extra_mode.clicked():
+                    extra()
+            if event.type == pygame.QUIT: #checks if the 'x' button is pressed
+                pygame.quit()
+
+        pygame.display.update()
+home()
+
+pygame.quit()
